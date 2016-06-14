@@ -512,7 +512,7 @@
 	                                } else if (this.spaceCount !== 0 && !prevIsSlash) {
 	                                    this.curAttrName = token;
 	                                    this.pushAttr(true);
-	                                } else if (!prevIsSlash || (this.ve && this.SELF_TAG_NAMES.indexOf(this.ve.tagName.toLowerCase())) < 0) {
+	                                } else if (!prevIsSlash) {
 	                                    ve = new _VElement2.default(token);
 	                                    this.pushChild(ve);
 	                                    this.pushVe(ve);
