@@ -509,12 +509,12 @@
 	                                } else if (this.spaceCount !== 0 && !prevIsSlash) {
 	                                    this.curAttrName = token;
 	                                    this.pushAttr(true);
-	                                } else if (this.SELF_TAG_NAMES.indexOf(token.toLowerCase()) < 0 && !prevIsSlash) {
+	                                } else if (prevIsSlash || this.SELF_TAG_NAMES.indexOf(token.toLowerCase()) >= 0) {
+	                                    this.popVe();
+	                                } else {
 	                                    ve = new _VElement2.default(token);
 	                                    this.pushChild(ve);
 	                                    this.pushVe(ve);
-	                                } else {
-	                                    this.popVe();
 	                                }
 	                            } else {
 	                                this.popVe();
