@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+</head>
+<body>
+<div id="a">
+    a
+    <p>b</p>
+</div>
+<script src="../dist/bundle.js"></script>
+<script>
+    console.log(transformToVNode(a));
+    s = '<div class="id" data-name="hehe\"\'" test-attr disabled>text 1 > 2<div /> <a href="hehe">I am a</  a><div class="ww">I am div<p>I am p</p></div>text2</div>';
+    w = '<div class="xixi" hidden />';
+    console.log(transformToVNode(s));
+    console.log(transformToVNode(w));
+</script>
+</body>
+</html>
