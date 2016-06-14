@@ -352,6 +352,10 @@
 	
 	var _VText2 = _interopRequireDefault(_VText);
 	
+	var _VComment = __webpack_require__(5);
+	
+	var _VComment2 = _interopRequireDefault(_VComment);
+	
 	var _VElement = __webpack_require__(2);
 	
 	var _VElement2 = _interopRequireDefault(_VElement);
@@ -371,6 +375,7 @@
 	        this.EQUAL = '=';
 	        this.BACKSLASH = '\\';
 	        this.SLASH = '/';
+	        this.BANG = '!';
 	        this.SELF_TAG_NAMES = ['img'];
 	
 	        this.init();
@@ -382,14 +387,14 @@
 	            this.inStr = false;
 	            this.inTag = false;
 	            this.inBeginTag = false;
-	            this.inEndTag = false;
 	            this.inAttr = false;
+	            this.inComment = false;
 	            this.depth = 0;
 	            this.quote = void 0;
 	            this.pIdx = 0;
 	            this.cIdx = 0;
-	            this.vn = void 0;
-	            this.rootVn = void 0;
+	            this.ve = void 0;
+	            this.rootVe = void 0;
 	            this.prev = void 0;
 	            this.str = void 0;
 	            this.curTagName = void 0;
@@ -413,36 +418,50 @@
 	            return v;
 	        }
 	    }, {
+	        key: 'getCommentData',
+	        value: function getCommentData(v) {
+	            v = v.substr(1);
+	            var l = v.length;
+	            if (v.charAt(0) === '-' && v.charAt(1) === '-') {
+	                if (v.charAt(l - 2) === '-' && v.charAt(l - 1) === '-') {
+	                    return v.substr(2, l - 4);
+	                } else {
+	                    return v.substr(2);
+	                }
+	            }
+	            return v;
+	        }
+	    }, {
 	        key: 'pushAttr',
 	        value: function pushAttr(v) {
-	            this.vn.attributes[this.curAttrName] = typeof v === 'string' ? this.getAttrValue(v) : v;
+	            this.ve.attributes[this.curAttrName] = typeof v === 'string' ? this.getAttrValue(v) : v;
 	            this.curAttrName = void 0;
 	            this.inAttr = false;
 	        }
 	    }, {
 	        key: 'pushChild',
 	        value: function pushChild(v) {
-	            if (!this.vn) {
+	            if (!this.ve) {
 	                return;
 	            }
-	            this.vn.children.push(v);
+	            this.ve.children.push(v);
 	        }
 	    }, {
-	        key: 'pushVn',
-	        value: function pushVn(vn) {
-	            this.stack.push(vn);
+	        key: 'pushVe',
+	        value: function pushVe(ve) {
+	            this.stack.push(ve);
 	            this.depth++;
-	            this.vn = vn;
-	            if (!this.rootVn) {
-	                this.rootVn = vn;
+	            this.ve = ve;
+	            if (!this.rootVe) {
+	                this.rootVe = ve;
 	            }
 	        }
 	    }, {
-	        key: 'popVn',
-	        value: function popVn() {
+	        key: 'popVe',
+	        value: function popVe() {
 	            this.stack.pop();
 	            this.depth--;
-	            this.vn = this.stack[this.depth - 1];
+	            this.ve = this.stack[this.depth - 1];
 	        }
 	    }, {
 	        key: 'parse',
@@ -452,58 +471,69 @@
 	            var idx = 0;
 	            var char = str.charAt(idx);
 	            var token = void 0;
-	            var vn = void 0;
+	            var ve = void 0;
+	            var next = void 0;
 	            var nextIsSlash = void 0;
 	            var prevIsSlash = void 0;
+	            var nextIsBang = void 0;
 	            while (char) {
 	                this.cIdx = idx;
 	                if (!this.inStr) {
 	                    if (char === this.TAG_START) {
 	                        token = this.getToken();
-	                        nextIsSlash = str.charAt(idx + 1) === this.SLASH;
+	                        next = str.charAt(idx + 1);
+	                        nextIsSlash = next === this.SLASH;
+	                        nextIsBang = next === this.BANG;
+	
 	                        if (token) {
 	                            this.pushChild(new _VText2.default(token));
 	                        }
-	                        this.inTag = true;
-	                        if (nextIsSlash) {
-	                            this.inEndTag = true;
+	
+	                        if (nextIsBang) {
+	                            this.inComment = true;
 	                        } else {
-	                            this.inBeginTag = true;
+	                            this.inTag = true;
+	                            if (!nextIsSlash) {
+	                                this.inBeginTag = true;
+	                            }
 	                        }
 	                        this.pIdx = idx;
 	                    }
-	                    if (this.inTag && char === this.TAG_END) {
+	                    if (char === this.TAG_END) {
 	                        token = this.getToken();
-	                        if (this.inBeginTag) {
-	                            prevIsSlash = this.prev === this.SLASH;
-	                            if (this.curAttrName) {
-	                                this.pushAttr(token);
-	                            } else if (this.spaceCount !== 0 && !prevIsSlash) {
-	                                this.curAttrName = token;
-	                                this.pushAttr(true);
-	                            } else if (this.SELF_TAG_NAMES.indexOf(token.toLowerCase()) < 0 && !prevIsSlash) {
-	                                vn = new _VElement2.default(token);
-	                                this.pushChild(vn);
-	                                this.pushVn(vn);
+	                        if (this.inTag) {
+	                            if (this.inBeginTag) {
+	                                prevIsSlash = this.prev === this.SLASH;
+	                                if (this.curAttrName) {
+	                                    this.pushAttr(token);
+	                                } else if (this.spaceCount !== 0 && !prevIsSlash) {
+	                                    this.curAttrName = token;
+	                                    this.pushAttr(true);
+	                                } else if (this.SELF_TAG_NAMES.indexOf(token.toLowerCase()) < 0 && !prevIsSlash) {
+	                                    ve = new _VElement2.default(token);
+	                                    this.pushChild(ve);
+	                                    this.pushVe(ve);
+	                                } else {
+	                                    this.popVe();
+	                                }
 	                            } else {
-	                                this.popVn();
+	                                this.popVe();
 	                            }
-	                        } else {
-	                            this.popVn();
+	                            this.inTag = false;
+	                            this.inBeginTag = false;
+	                            this.spaceCount = 0;
+	                        } else if (this.inComment) {
+	                            this.pushChild(new _VComment2.default(this.getCommentData(token)));
 	                        }
-	                        this.inTag = false;
-	                        this.inBeginTag = false;
-	                        this.inEndTag = false;
-	                        this.spaceCount = 0;
 	                        this.pIdx = idx;
 	                    }
 	                    if (this.inBeginTag && char === this.SPACE) {
 	                        token = this.getToken();
 	                        if (token) {
 	                            if (this.spaceCount === 0) {
-	                                vn = new _VElement2.default(token);
-	                                this.pushChild(vn);
-	                                this.pushVn(vn);
+	                                ve = new _VElement2.default(token);
+	                                this.pushChild(ve);
+	                                this.pushVe(ve);
 	                            } else if (!this.curAttrName) {
 	                                this.curAttrName = token;
 	                                this.pushAttr(true);
@@ -535,7 +565,7 @@
 	                this.prev = char;
 	                char = str.charAt(++idx);
 	            }
-	            var r = this.rootVn;
+	            var r = this.rootVe;
 	            this.init();
 	            return r;
 	        }
