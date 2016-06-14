@@ -15,9 +15,11 @@
     s = '<div class="id" data-name="hehe\"\'" test-attr disabled>text 1 > 2<div /> <a href="hehe">I am a</  a><div class="ww">I am div<p>I am p</p></div>text2</div>';
     w = '<div class="xixi" hidden />';
     e = '<div class="ii" xx><!--a--><!b><!--c><!--></div>';
+    r = '<div><img a  ><p class="hidden"  ></p></div>';
     console.log(transformToVNode(s));
     console.log(transformToVNode(w));
     console.log(transformToVNode(e));
+    console.log(transformToVNode(r));
 </script>
 </body>
 </html>

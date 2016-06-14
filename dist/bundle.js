@@ -434,6 +434,9 @@
 	    }, {
 	        key: 'pushAttr',
 	        value: function pushAttr(v) {
+	            if (!this.curAttrName) {
+	                return;
+	            }
 	            this.ve.attributes[this.curAttrName] = typeof v === 'string' ? this.getAttrValue(v) : v;
 	            this.curAttrName = void 0;
 	            this.inAttr = false;
@@ -502,19 +505,19 @@
 	                    if (char === this.TAG_END) {
 	                        token = this.getToken();
 	                        if (this.inTag) {
-	                            if (this.inBeginTag) {
+	                            if (this.inBeginTag && token) {
 	                                prevIsSlash = this.prev === this.SLASH;
 	                                if (this.curAttrName) {
 	                                    this.pushAttr(token);
 	                                } else if (this.spaceCount !== 0 && !prevIsSlash) {
 	                                    this.curAttrName = token;
 	                                    this.pushAttr(true);
-	                                } else if (prevIsSlash || this.SELF_TAG_NAMES.indexOf(token.toLowerCase()) >= 0) {
-	                                    this.popVe();
-	                                } else {
+	                                } else if (!prevIsSlash || (this.ve && this.SELF_TAG_NAMES.indexOf(this.ve.tagName.toLowerCase())) < 0) {
 	                                    ve = new _VElement2.default(token);
 	                                    this.pushChild(ve);
 	                                    this.pushVe(ve);
+	                                } else {
+	                                    this.popVe();
 	                                }
 	                            } else {
 	                                this.popVe();
