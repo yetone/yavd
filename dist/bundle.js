@@ -544,7 +544,7 @@
 	                                    if (!prevIsSlash && this.ve && this.SELF_TAG_NAMES.indexOf(this.ve.tagName.toLowerCase()) >= 0) {
 	                                        this.popVe();
 	                                    }
-	                                } else {
+	                                } else if (this.ve && this.SELF_TAG_NAMES.indexOf(this.ve.tagName.toLowerCase()) >= 0) {
 	                                    this.popVe();
 	                                }
 	                            } else {
