@@ -1,6 +1,6 @@
 yavd
 ============
 
-Yet another virtual dom lib. 🚀
+Yet another virtual dom lib. 🌊
 
-![live daemon](http://lab.collipa.com/yavd/example)
+**[LIVE DAEMON](http://lab.collipa.com/yavd/example)**
