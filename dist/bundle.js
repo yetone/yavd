@@ -400,7 +400,7 @@
 	        this.BACKSLASH = '\\';
 	        this.SLASH = '/';
 	        this.BANG = '!';
-	        this.SELF_TAG_NAMES = ['img'];
+	        this.SELF_TAG_NAMES = ['img', 'link', 'br', 'hr', 'col', 'area', 'meta', 'frame', 'input', 'param'];
 	
 	        this.init();
 	    }
@@ -491,6 +491,13 @@
 	            this.ve = this.stack[this.depth - 1];
 	        }
 	    }, {
+	        key: 'newElement',
+	        value: function newElement(tagName) {
+	            var ve = new _VElement2.default(tagName);
+	            this.pushChild(ve);
+	            this.pushVe(ve);
+	        }
+	    }, {
 	        key: 'parse',
 	        value: function parse(str) {
 	            str = str.trim();
@@ -498,7 +505,6 @@
 	            var idx = 0;
 	            var char = str.charAt(idx);
 	            var token = void 0;
-	            var ve = void 0;
 	            var next = void 0;
 	            var nextIsSlash = void 0;
 	            var prevIsSlash = void 0;
@@ -538,12 +544,15 @@
 	                                        this.curAttrName = token;
 	                                        this.pushAttr(true);
 	                                    } else if (!prevIsSlash) {
-	                                        ve = new _VElement2.default(token);
-	                                        this.pushChild(ve);
-	                                        this.pushVe(ve);
+	                                        this.newElement(token);
 	                                    } else {
 	                                        this.popVe();
 	                                    }
+	                                    if (!prevIsSlash && this.ve && this.SELF_TAG_NAMES.indexOf(this.ve.tagName.toLowerCase()) >= 0) {
+	                                        this.popVe();
+	                                    }
+	                                } else {
+	                                    this.popVe();
 	                                }
 	                            } else {
 	                                this.popVe();
@@ -560,9 +569,7 @@
 	                        token = this.getToken();
 	                        if (token) {
 	                            if (this.spaceCount === 0) {
-	                                ve = new _VElement2.default(token);
-	                                this.pushChild(ve);
-	                                this.pushVe(ve);
+	                                this.newElement(token);
 	                            } else if (!this.curAttrName) {
 	                                this.curAttrName = token;
 	                                this.pushAttr(true);
@@ -572,6 +579,10 @@
 	                        }
 	                        this.spaceCount++;
 	                        this.pIdx = idx;
+	                    }
+	                    if (this.inBeginTag && char === this.SLASH && this.spaceCount === 0 && str.charAt(idx + 1) === this.TAG_END) {
+	                        token = this.getToken();
+	                        this.newElement(token);
 	                    }
 	                    if (char === this.EQUAL) {
 	                        token = this.getToken();

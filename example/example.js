@@ -89,11 +89,18 @@ function toChartData(vn) {
 
 html.addEventListener('keyup', function() {
     draw();
+    location.hash = encodeURIComponent(html.value);
 }, false);
 
-html.value = '<!DOCTYPE html>\n\
+var hash = location.hash.substr(1);
+
+if (hash) {
+    html.value = decodeURIComponent(hash);
+} else {
+    html.value = '<!DOCTYPE html>\n\
 <html>\n\
 <head>\n\
+    <meta charset="UTF-8">\n\
     <title>DOM-Drawer</title>\n\
     <link rel="stylesheet" type="text/css" href="style.css">\n\
     <script type="text/javascript" herf="index.js"></script>\n\
@@ -101,7 +108,16 @@ html.value = '<!DOCTYPE html>\n\
 <body>\n\
     <!--这是注释-->\n\
     <p>Hello,World!</p>\n\
+    <div>\n\
+        Hello,World!\n\
+        <img />\n\
+        <hr/>\n\
+        <area>\n\
+        <input >\n\
+        <frame  >\n\
+    </div>\n\
 </body>\n\
 </html>';
+}
 
 draw();
