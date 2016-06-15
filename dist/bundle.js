@@ -505,19 +505,21 @@
 	                    if (char === this.TAG_END) {
 	                        token = this.getToken();
 	                        if (this.inTag) {
-	                            if (this.inBeginTag && token) {
+	                            if (this.inBeginTag) {
 	                                prevIsSlash = this.prev === this.SLASH;
-	                                if (this.curAttrName) {
-	                                    this.pushAttr(token);
-	                                } else if (this.spaceCount !== 0 && !prevIsSlash) {
-	                                    this.curAttrName = token;
-	                                    this.pushAttr(true);
-	                                } else if (!prevIsSlash) {
-	                                    ve = new _VElement2.default(token);
-	                                    this.pushChild(ve);
-	                                    this.pushVe(ve);
-	                                } else {
-	                                    this.popVe();
+	                                if (token) {
+	                                    if (this.curAttrName) {
+	                                        this.pushAttr(token);
+	                                    } else if (this.spaceCount !== 0 && !prevIsSlash) {
+	                                        this.curAttrName = token;
+	                                        this.pushAttr(true);
+	                                    } else if (!prevIsSlash) {
+	                                        ve = new _VElement2.default(token);
+	                                        this.pushChild(ve);
+	                                        this.pushVe(ve);
+	                                    } else {
+	                                        this.popVe();
+	                                    }
 	                                }
 	                            } else {
 	                                this.popVe();
