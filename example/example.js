@@ -6,7 +6,7 @@ function draw() {
     var myChart = echarts.init(main);
     var option = {
         title: {
-            text: 'DOM Drawer'
+            text: 'YAVD'
         },
         toolbox: {
             show: true,
