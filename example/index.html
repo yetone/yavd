@@ -3,25 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Example</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .box {
+            overflow: hidden;
+            height: 100%;
+        }
+
+        #main {
+            float: left;
+            width: 70%;
+            height: 100%;
+        }
+
+        .input {
+            float: left;
+            width: 30%;
+            border: 0;
+            height: 100%;
+        }
+        #html{
+            height: 100%;
+            width: 100%;
+            border: 0;
+            outline: none;
+            background: #333;
+            color: #eee;
+            font-size: 16px;
+            box-sizing:border-box;
+            padding: 10px;
+            line-height: 20px;
+        }
+    </style>
 </head>
 <body>
-<div id="a">
-    a
-    <p>b</p>
-</div>
-<script src="../dist/bundle.js"></script>
-<script>
-    console.log(transformToVNode(a));
-    s = '<div class="id" data-name="hehe\"\'" test-attr disabled>text 1 > 2<div /> <a href="hehe">I am a</  a><div class="ww">I am div<p>I am p</p></div>text2</div>';
-    w = '<div class="xixi" hidden />';
-    e = '<div class="ii" xx><!--a--><!b><!--c><!--></div>';
-    r = '<div><img a  ><p class="hidden"  ></p></div>';
-    t = '<div><fuck ></fuck><p></p></div>';
-    console.log(transformToVNode(s));
-    console.log(transformToVNode(w));
-    console.log(transformToVNode(e));
-    console.log(transformToVNode(r));
-    console.log(transformToVNode(t));
-</script>
+    <div class="box">
+        <div class="input">
+            <textarea id="html"></textarea>
+        </div>
+        <div id="main"></div>
+    </div>
+    <script src="../node_modules/echarts/build/echarts-all.js"></script>
+    <script src="../dist/bundle.js"></script>
+    <script>
+        console.log(transformToVNode(document.querySelector('.box')));
+        var s = '<div class="id" data-name="hehe\"\'" test-attr disabled>text 1 > 2<div /> <a href="hehe">I am a</  a><div class="ww">I am div<p>I am p</p></div>text2</div>';
+        var w = '<div class="xixi" hidden />';
+        var e = '<div class="ii" xx><!--a--><!b><!--c><!--></div>';
+        var r = '<div><img a  ><p class="hidden"  ></p></div>';
+        var t = '<div><fuck ></fuck><p></p></div>';
+        console.log(transformToVNode(s));
+        console.log(transformToVNode(w));
+        console.log(transformToVNode(e));
+        console.log(transformToVNode(r));
+        console.log(transformToVNode(t));
+    </script>
+    <script src="./example.js"></script>
 </body>
 </html>

@@ -53,11 +53,35 @@
 
 	'use strict';
 	
+	var _VNode = __webpack_require__(3);
+	
+	var _VNode2 = _interopRequireDefault(_VNode);
+	
+	var _VElement = __webpack_require__(2);
+	
+	var _VElement2 = _interopRequireDefault(_VElement);
+	
+	var _VComment = __webpack_require__(5);
+	
+	var _VComment2 = _interopRequireDefault(_VComment);
+	
+	var _VText = __webpack_require__(4);
+	
+	var _VText2 = _interopRequireDefault(_VText);
+	
 	var _utils = __webpack_require__(7);
 	
-	window.transformToVNode = _utils.transformToVNode; /**
-	                                                    * Created by yetone on 16/6/14.
-	                                                    */
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	if (typeof window !== 'undefined') {
+	    window.VNode = _VNode2.default;
+	    window.VElement = _VElement2.default;
+	    window.VComment = _VComment2.default;
+	    window.VText = _VText2.default;
+	    window.transformToVNode = _utils.transformToVNode;
+	} /**
+	   * Created by yetone on 16/6/14.
+	   */
 
 /***/ },
 /* 2 */
