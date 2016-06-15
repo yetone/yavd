@@ -2,6 +2,14 @@
  * Created by yetone on 16/6/15.
  */
 
+var cm = CodeMirror.fromTextArea(html, {
+    mode: 'text/html',
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    theme: 'dracula'
+});
+
 function draw() {
     var myChart = echarts.init(main);
     var option = {
@@ -60,7 +68,7 @@ function draw() {
                     borderWidth: 0
                 }
             },
-            data: [toChartData(transformToVNode(html.value))]
+            data: [toChartData(transformToVNode(cm.doc.getValue()))]
         }]
     };
     myChart.setOption(option);
@@ -87,17 +95,17 @@ function toChartData(vn) {
     }
 }
 
-html.addEventListener('keyup', function() {
+cm.on('change', function() {
     draw();
-    location.hash = encodeURIComponent(html.value);
+    location.hash = encodeURIComponent(cm.doc.getValue());
 }, false);
 
 var hash = location.hash.substr(1);
 
 if (hash) {
-    html.value = decodeURIComponent(hash);
+    cm.doc.setValue(decodeURIComponent(hash));
 } else {
-    html.value = '<!DOCTYPE html>\n\
+    cm.doc.setValue('<!DOCTYPE html>\n\
 <html>\n\
 <head>\n\
     <meta charset="UTF-8">\n\
@@ -117,7 +125,7 @@ if (hash) {
         <frame  >\n\
     </div>\n\
 </body>\n\
-</html>';
+</html>');
 }
 
 draw();
