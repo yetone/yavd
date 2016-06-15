@@ -3,4 +3,4 @@ yavd
 
 Yet another virtual dom lib. 🌊
 
-**[LIVE DAEMON](http://lab.collipa.com/yavd/example)**
+**[LIVE EXAMPLE](http://lab.collipa.com/yavd/example)**
