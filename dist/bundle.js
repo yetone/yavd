@@ -334,7 +334,7 @@
 	    var children = (0, _utils.toArray)(node.childNodes).map(transformNodeToVNode);
 	    if (node instanceof HTMLElement) {
 	        attributes = (0, _utils.toArray)(node.attributes).reduce(function (prev, curr) {
-	            return _extends({}, prev, _defineProperty({}, curr.name, curr.value));
+	            return _extends({}, prev, _defineProperty({}, curr.name, curr.value || true));
 	        }, {});
 	        res = new _VElement2.default(node.tagName, attributes, children);
 	    } else if (node instanceof Text) {
@@ -594,13 +594,15 @@
 	                        this.pIdx = idx;
 	                    }
 	                }
-	                if (this.QUOTES.indexOf(char) >= 0 && this.prev !== this.BACKSLASH && !this.inAttr) {
+	                if (this.QUOTES.indexOf(char) >= 0) {
 	                    if (this.quote === void 0) {
 	                        this.quote = char;
 	                        this.inStr = true;
 	                    } else if (this.quote === char) {
-	                        this.quote = void 0;
-	                        this.inStr = false;
+	                        if (!this.inTag || [this.SPACE, this.TAG_END].indexOf(str.charAt(idx + 1)) >= 0) {
+	                            this.quote = void 0;
+	                            this.inStr = false;
+	                        }
 	                    }
 	                }
 	                this.prev = char;
