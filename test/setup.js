@@ -6,6 +6,7 @@ import { jsdom } from 'jsdom';
 
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
-
-global.expect = require('chai').expect;
-global.should = require('chai').should();
+global.Node = window.Node;
+global.HTMLElement = window.HTMLElement;
+global.Text = window.Text;
+global.Comment = window.Comment;
