@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Example</title>
-    <link rel="stylesheet" href="../node_modules/codemirror/lib/codemirror.css">
-    <link rel="stylesheet" href="../node_modules/codemirror/theme/dracula.css">
+    <link rel="stylesheet" href="../../yavd/node_modules/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="../../yavd/node_modules/codemirror/theme/dracula.css">
     <style>
         body,
         html {
@@ -48,10 +48,10 @@
         </div>
         <div id="main"></div>
     </div>
-    <script src="../node_modules/codemirror/lib/codemirror.js"></script>
-    <script src="../node_modules/codemirror/mode/xml/xml.js"></script>
-    <script src="../node_modules/echarts/build/echarts-all.js"></script>
-    <script src="../dist/bundle.js"></script>
+    <script src="../../yavd/node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="../../yavd/node_modules/codemirror/mode/xml/xml.js"></script>
+    <script src="../../yavd/node_modules/echarts/build/echarts-all.js"></script>
+    <script src="../../yavd/dist/bundle.js"></script>
     <script>
         console.log(transformToVNode(document.querySelector('.box')));
         var s = '<div class="id" data-name="hehe\"\'" test-attr disabled>text 1 > 2<div /> <a href="hehe">I am a</  a><div class="ww">I am div<p>I am p</p></div>text2</div>';
@@ -65,6 +65,6 @@
         console.log(transformToVNode(r));
         console.log(transformToVNode(t));
     </script>
-    <script src="./example.js"></script>
+    <script src="../../yavd/example/example.js"></script>
 </body>
 </html>
