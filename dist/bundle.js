@@ -518,7 +518,7 @@
 	                        nextIsSlash = next === this.SLASH;
 	                        nextIsBang = next === this.BANG;
 	
-	                        if (token) {
+	                        if (token && !this.inComment) {
 	                            this.pushChild(new _VText2.default(token));
 	                        }
 	
@@ -534,7 +534,10 @@
 	                    }
 	                    if (char === this.TAG_END) {
 	                        token = this.getToken();
-	                        if (this.inTag) {
+	                        if (this.inComment) {
+	                            this.pushChild(new _VComment2.default(this.getCommentData(token)));
+	                            this.inComment = false;
+	                        } else if (this.inTag) {
 	                            if (this.inBeginTag) {
 	                                prevIsSlash = this.prev === this.SLASH;
 	                                if (token) {
@@ -560,8 +563,6 @@
 	                            this.inTag = false;
 	                            this.inBeginTag = false;
 	                            this.spaceCount = 0;
-	                        } else if (this.inComment) {
-	                            this.pushChild(new _VComment2.default(this.getCommentData(token)));
 	                        }
 	                        this.pIdx = idx;
 	                    }
