@@ -108,22 +108,22 @@ if (hash) {
     cm.doc.setValue('<!DOCTYPE html>\n\
 <html>\n\
 <head>\n\
-    <meta charset="UTF-8">\n\
-    <title>DOM-Drawer</title>\n\
-    <link rel="stylesheet" type="text/css" href="style.css">\n\
-    <script type="text/javascript" herf="index.js"></script>\n\
+  <meta charset="UTF-8">\n\
+  <title>DOM-Drawer</title>\n\
+  <link rel="stylesheet" type="text/css" href="style.css">\n\
+  <script type="text/javascript" herf="index.js"></script>\n\
 </head>\n\
 <body>\n\
-    <!--这是注释-->\n\
-    <p>Hello,World!</p>\n\
-    <div>\n\
-        Hello,World!\n\
-        <img />\n\
-        <hr/>\n\
-        <area>\n\
-        <input >\n\
-        <frame  >\n\
-    </div>\n\
+  <!--这是注释-->\n\
+  <p>Hello,World!</p>\n\
+  <div>\n\
+    Hello,World!\n\
+    <img />\n\
+    <hr/>\n\
+    <area>\n\
+    <input >\n\
+    <frame  >\n\
+  </div>\n\
 </body>\n\
 </html>');
 }
