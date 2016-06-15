@@ -53,23 +53,23 @@
 
 	'use strict';
 	
-	var _VNode = __webpack_require__(3);
+	var _VNode = __webpack_require__(2);
 	
 	var _VNode2 = _interopRequireDefault(_VNode);
 	
-	var _VElement = __webpack_require__(2);
+	var _VElement = __webpack_require__(3);
 	
 	var _VElement2 = _interopRequireDefault(_VElement);
 	
-	var _VComment = __webpack_require__(5);
+	var _VComment = __webpack_require__(4);
 	
 	var _VComment2 = _interopRequireDefault(_VComment);
 	
-	var _VText = __webpack_require__(4);
+	var _VText = __webpack_require__(5);
 	
 	var _VText2 = _interopRequireDefault(_VText);
 	
-	var _utils = __webpack_require__(7);
+	var _utils = __webpack_require__(6);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -85,6 +85,39 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * Created by yetone on 16/6/14.
+	 */
+	
+	var VNode = function () {
+	  function VNode() {
+	    _classCallCheck(this, VNode);
+	  }
+	
+	  _createClass(VNode, [{
+	    key: "toString",
+	    value: function toString() {}
+	  }]);
+	
+	  return VNode;
+	}();
+	
+	exports.default = VNode;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -94,7 +127,7 @@
 	});
 	exports.default = undefined;
 	
-	var _VNode2 = __webpack_require__(3);
+	var _VNode2 = __webpack_require__(2);
 	
 	var _VNode3 = _interopRequireDefault(_VNode2);
 	
@@ -131,39 +164,6 @@
 	exports.default = VElement;
 
 /***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/**
-	 * Created by yetone on 16/6/14.
-	 */
-	
-	var VNode = function () {
-	  function VNode() {
-	    _classCallCheck(this, VNode);
-	  }
-	
-	  _createClass(VNode, [{
-	    key: "toString",
-	    value: function toString() {}
-	  }]);
-	
-	  return VNode;
-	}();
-	
-	exports.default = VNode;
-
-/***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -174,49 +174,7 @@
 	});
 	exports.default = undefined;
 	
-	var _VNode2 = __webpack_require__(3);
-	
-	var _VNode3 = _interopRequireDefault(_VNode2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yetone on 16/6/14.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-	
-	var VText = function (_VNode) {
-	    _inherits(VText, _VNode);
-	
-	    function VText(data) {
-	        _classCallCheck(this, VText);
-	
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VText).call(this));
-	
-	        _this.data = data;
-	        return _this;
-	    }
-	
-	    return VText;
-	}(_VNode3.default);
-	
-	exports.default = VText;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = undefined;
-	
-	var _VNode2 = __webpack_require__(3);
+	var _VNode2 = __webpack_require__(2);
 	
 	var _VNode3 = _interopRequireDefault(_VNode2);
 	
@@ -248,7 +206,118 @@
 	exports.default = VComment;
 
 /***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	var _VNode2 = __webpack_require__(2);
+	
+	var _VNode3 = _interopRequireDefault(_VNode2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yetone on 16/6/14.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var VText = function (_VNode) {
+	    _inherits(VText, _VNode);
+	
+	    function VText(data) {
+	        _classCallCheck(this, VText);
+	
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VText).call(this));
+	
+	        _this.data = data;
+	        return _this;
+	    }
+	
+	    return VText;
+	}(_VNode3.default);
+	
+	exports.default = VText;
+
+/***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
+	                                                                                                                                                                                                                                                                   * Created by yetone on 16/6/14.
+	                                                                                                                                                                                                                                                                   */
+	
+	exports.transformToVNode = transformToVNode;
+	exports.diff = diff;
+	
+	var _VElement = __webpack_require__(3);
+	
+	var _VElement2 = _interopRequireDefault(_VElement);
+	
+	var _VText = __webpack_require__(5);
+	
+	var _VText2 = _interopRequireDefault(_VText);
+	
+	var _VComment = __webpack_require__(4);
+	
+	var _VComment2 = _interopRequireDefault(_VComment);
+	
+	var _utils = __webpack_require__(7);
+	
+	var _htmlParser = __webpack_require__(8);
+	
+	var _htmlParser2 = _interopRequireDefault(_htmlParser);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function transformNodeToVNode(node) {
+	    var res = void 0;
+	    var attributes = void 0;
+	    var children = (0, _utils.toArray)(node.childNodes).map(transformNodeToVNode);
+	    if (node instanceof HTMLElement) {
+	        attributes = (0, _utils.toArray)(node.attributes).reduce(function (prev, curr) {
+	            return _extends({}, prev, _defineProperty({}, curr.name, curr.value));
+	        }, {});
+	        res = new _VElement2.default(node.tagName, attributes, children);
+	    } else if (node instanceof Text) {
+	        res = new _VText2.default(node.data);
+	    } else if (node instanceof Comment) {
+	        res = new _VComment2.default(node.data);
+	    }
+	    return res;
+	}
+	
+	function transformStrToVNode(str) {
+	    return _htmlParser2.default.parse(str);
+	}
+	
+	function transformToVNode(nodeOrStr) {
+	    if (nodeOrStr instanceof Node) {
+	        return transformNodeToVNode(nodeOrStr);
+	    }
+	    return transformStrToVNode(nodeOrStr);
+	}
+	
+	function diff(oldVn, newVn) {}
+
+/***/ },
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -290,75 +359,6 @@
 	}
 
 /***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
-	                                                                                                                                                                                                                                                                   * Created by yetone on 16/6/14.
-	                                                                                                                                                                                                                                                                   */
-	
-	exports.transformToVNode = transformToVNode;
-	exports.diff = diff;
-	
-	var _VElement = __webpack_require__(2);
-	
-	var _VElement2 = _interopRequireDefault(_VElement);
-	
-	var _VText = __webpack_require__(4);
-	
-	var _VText2 = _interopRequireDefault(_VText);
-	
-	var _VComment = __webpack_require__(5);
-	
-	var _VComment2 = _interopRequireDefault(_VComment);
-	
-	var _utils = __webpack_require__(6);
-	
-	var _htmlParser = __webpack_require__(8);
-	
-	var _htmlParser2 = _interopRequireDefault(_htmlParser);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	function transformNodeToVNode(node) {
-	    var res = void 0;
-	    var attributes = void 0;
-	    var children = (0, _utils.toArray)(node.childNodes).map(transformNodeToVNode);
-	    if (node instanceof HTMLElement) {
-	        attributes = (0, _utils.toArray)(node.attributes).reduce(function (prev, curr) {
-	            return _extends({}, prev, _defineProperty({}, curr.name, curr.value || true));
-	        }, {});
-	        res = new _VElement2.default(node.tagName, attributes, children);
-	    } else if (node instanceof Text) {
-	        res = new _VText2.default(node.data);
-	    } else if (node instanceof Comment) {
-	        res = new _VComment2.default(node.data);
-	    }
-	    return res;
-	}
-	
-	function transformStrToVNode(str) {
-	    return _htmlParser2.default.parse(str);
-	}
-	
-	function transformToVNode(nodeOrStr) {
-	    if (nodeOrStr instanceof Node) {
-	        return transformNodeToVNode(nodeOrStr);
-	    }
-	    return transformStrToVNode(nodeOrStr);
-	}
-	
-	function diff(oldVn, newVn) {}
-
-/***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -372,15 +372,15 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by yetone on 16/6/14.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 	
-	var _VText = __webpack_require__(4);
+	var _VText = __webpack_require__(5);
 	
 	var _VText2 = _interopRequireDefault(_VText);
 	
-	var _VComment = __webpack_require__(5);
+	var _VComment = __webpack_require__(4);
 	
 	var _VComment2 = _interopRequireDefault(_VComment);
 	
-	var _VElement = __webpack_require__(2);
+	var _VElement = __webpack_require__(3);
 	
 	var _VElement2 = _interopRequireDefault(_VElement);
 	
@@ -411,7 +411,6 @@
 	            this.inStr = false;
 	            this.inTag = false;
 	            this.inBeginTag = false;
-	            this.inAttr = false;
 	            this.inComment = false;
 	            this.depth = 0;
 	            this.quote = void 0;
@@ -421,8 +420,6 @@
 	            this.rootVe = void 0;
 	            this.prev = void 0;
 	            this.str = void 0;
-	            this.curTagName = void 0;
-	            this.curAttrName = void 0;
 	            this.stack = [];
 	            this.spaceCount = 0;
 	        }
@@ -430,16 +427,6 @@
 	        key: 'getToken',
 	        value: function getToken() {
 	            return this.str.substr(this.pIdx + 1, this.cIdx - this.pIdx - 1);
-	        }
-	    }, {
-	        key: 'getAttrValue',
-	        value: function getAttrValue(v) {
-	            var l = v.length;
-	            var s = v.charAt(0);
-	            if (this.QUOTES.indexOf(s) >= 0) {
-	                return v.substr(1, l - 2);
-	            }
-	            return v;
 	        }
 	    }, {
 	        key: 'getCommentData',
@@ -457,13 +444,19 @@
 	        }
 	    }, {
 	        key: 'pushAttr',
-	        value: function pushAttr(v) {
-	            if (!this.curAttrName) {
-	                return;
+	        value: function pushAttr(token) {
+	            var l = token.length;
+	            var idx = token.indexOf('=');
+	            var k = void 0,
+	                v = void 0;
+	            if (idx < 0) {
+	                k = token;
+	                v = '';
+	            } else {
+	                k = token.substr(0, idx);
+	                v = token.substr(idx + 2, l - k.length - 3);
 	            }
-	            this.ve.attributes[this.curAttrName] = typeof v === 'string' ? this.getAttrValue(v) : v;
-	            this.curAttrName = void 0;
-	            this.inAttr = false;
+	            this.ve.attributes[k] = v;
 	        }
 	    }, {
 	        key: 'pushChild',
@@ -541,11 +534,8 @@
 	                            if (this.inBeginTag) {
 	                                prevIsSlash = this.prev === this.SLASH;
 	                                if (token) {
-	                                    if (this.curAttrName) {
+	                                    if (this.spaceCount !== 0 && !prevIsSlash) {
 	                                        this.pushAttr(token);
-	                                    } else if (this.spaceCount !== 0 && !prevIsSlash) {
-	                                        this.curAttrName = token;
-	                                        this.pushAttr(true);
 	                                    } else if (!prevIsSlash) {
 	                                        this.newElement(token);
 	                                    } else {
@@ -571,9 +561,6 @@
 	                        if (token) {
 	                            if (this.spaceCount === 0) {
 	                                this.newElement(token);
-	                            } else if (!this.curAttrName) {
-	                                this.curAttrName = token;
-	                                this.pushAttr(true);
 	                            } else {
 	                                this.pushAttr(token);
 	                            }
@@ -585,13 +572,9 @@
 	                        token = this.getToken();
 	                        this.newElement(token);
 	                    }
-	                    if (char === this.EQUAL) {
-	                        token = this.getToken();
-	                        if (token && this.inTag) {
-	                            this.curAttrName = token;
-	                            this.inAttr = true;
-	                        }
-	                        this.pIdx = idx;
+	                    if (this.inBeginTag && [this.SPACE, this.SLASH, this.TAG_END].indexOf(char) < 0 && this.QUOTES.indexOf(this.prev) >= 0) {
+	                        this.pushAttr(this.getToken());
+	                        this.pIdx = idx - 1;
 	                    }
 	                }
 	                if (this.QUOTES.indexOf(char) >= 0) {
@@ -599,10 +582,8 @@
 	                        this.quote = char;
 	                        this.inStr = true;
 	                    } else if (this.quote === char) {
-	                        if (!this.inTag || [this.SPACE, this.TAG_END].indexOf(str.charAt(idx + 1)) >= 0) {
-	                            this.quote = void 0;
-	                            this.inStr = false;
-	                        }
+	                        this.quote = void 0;
+	                        this.inStr = false;
 	                    }
 	                }
 	                this.prev = char;

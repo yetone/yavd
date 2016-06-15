@@ -7,10 +7,10 @@ import { transformToVNode } from '../lib/VNode/utils';
 
 test('VNode', t => {
     let div = document.createElement('div');
-    div.className = `test"aa'`;
     let html = `
+        <div class="test'"abc></div>
         <div class="input">
-            <textarea id="html"></textarea>
+            <textarea id="html"  class="xx"   name="yy y" ></textarea>
         </div>
         <div id="main" name="yetone yeah">
             <img>
@@ -28,6 +28,8 @@ test('VNode', t => {
     `;
     div.innerHTML = html;
     let vNode = transformToVNode(div);
-    let vNode1 = transformToVNode(`<div class="test"aa'">${html}</div>`);
+    let vNode1 = transformToVNode(`<div>${html}</div>`);
+    console.log(vNode);
+    console.log(vNode1);
     t.deepEqual(vNode, vNode1, 'should equal');
 });
