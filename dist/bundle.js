@@ -127,11 +127,17 @@
 	});
 	exports.default = undefined;
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
 	var _VNode2 = __webpack_require__(2);
 	
 	var _VNode3 = _interopRequireDefault(_VNode2);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -145,16 +151,34 @@
 	    _inherits(VElement, _VNode);
 	
 	    function VElement(tagName) {
-	        var attributes = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        var properties = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	        var children = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+	        var key = arguments[3];
 	
 	        _classCallCheck(this, VElement);
 	
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VElement).call(this));
 	
+	        var style = properties.style;
+	
+	        if (typeof style === 'string') {
+	            properties.style = style.split(';').map(function (piece) {
+	                return piece.trim().split('=');
+	            }).filter(function (pairs) {
+	                return pairs.length === 2;
+	            }).reduce(function (acc, cur) {
+	                var _cur = _slicedToArray(cur, 2);
+	
+	                var k = _cur[0];
+	                var v = _cur[1];
+	
+	                return _extends({}, acc, _defineProperty({}, k, v));
+	            }, {});
+	        }
 	        _this.tagName = tagName.toUpperCase();
-	        _this.attributes = attributes;
+	        _this.properties = properties;
 	        _this.children = children;
+	        _this.key = key;
 	        return _this;
 	    }
 	
@@ -288,13 +312,13 @@
 	
 	function transformNodeToVNode(node) {
 	    var res = void 0;
-	    var attributes = void 0;
+	    var properties = void 0;
 	    var children = (0, _utils.toArray)(node.childNodes).map(transformNodeToVNode);
 	    if (node instanceof HTMLElement) {
-	        attributes = (0, _utils.toArray)(node.attributes).reduce(function (prev, curr) {
+	        properties = (0, _utils.toArray)(node.attributes).reduce(function (prev, curr) {
 	            return _extends({}, prev, _defineProperty({}, curr.name, curr.value));
 	        }, {});
-	        res = new _VElement2.default(node.tagName, attributes, children);
+	        res = new _VElement2.default(node.tagName, properties, children);
 	    } else if (node instanceof Text) {
 	        res = new _VText2.default(node.data);
 	    } else if (node instanceof Comment) {
@@ -443,8 +467,8 @@
 	            return v;
 	        }
 	    }, {
-	        key: 'pushAttr',
-	        value: function pushAttr(token) {
+	        key: 'pushProp',
+	        value: function pushProp(token) {
 	            var l = token.length;
 	            var idx = token.indexOf('=');
 	            var k = void 0,
@@ -456,7 +480,7 @@
 	                k = token.substr(0, idx);
 	                v = token.substr(idx + 2, l - k.length - 3);
 	            }
-	            this.ve.attributes[k] = v;
+	            this.ve.properties[k] = v;
 	        }
 	    }, {
 	        key: 'pushChild',
@@ -535,7 +559,7 @@
 	                                prevIsSlash = this.prev === this.SLASH;
 	                                if (token) {
 	                                    if (this.spaceCount !== 0 && !prevIsSlash) {
-	                                        this.pushAttr(token);
+	                                        this.pushProp(token);
 	                                    } else if (!prevIsSlash) {
 	                                        this.newElement(token);
 	                                    } else {
@@ -562,7 +586,7 @@
 	                            if (this.spaceCount === 0) {
 	                                this.newElement(token);
 	                            } else {
-	                                this.pushAttr(token);
+	                                this.pushProp(token);
 	                            }
 	                        }
 	                        this.spaceCount++;
@@ -573,7 +597,7 @@
 	                        this.newElement(token);
 	                    }
 	                    if (this.inBeginTag && [this.SPACE, this.SLASH, this.TAG_END].indexOf(char) < 0 && this.QUOTES.indexOf(this.prev) >= 0) {
-	                        this.pushAttr(this.getToken());
+	                        this.pushProp(this.getToken());
 	                        this.pIdx = idx - 1;
 	                    }
 	                }
