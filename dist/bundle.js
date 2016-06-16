@@ -171,6 +171,7 @@
 	        var properties = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	        var children = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 	        var key = arguments[3];
+	        var namespace = arguments[4];
 	
 	        _classCallCheck(this, VElement);
 	
@@ -180,6 +181,7 @@
 	        _this.properties = properties;
 	        _this.children = children;
 	        _this.key = key;
+	        _this.namespace = namespace;
 	
 	        var style = _this.properties.style;
 	
@@ -222,12 +224,13 @@
 	var VComment = function (_VNode) {
 	    _inherits(VComment, _VNode);
 	
-	    function VComment(data) {
+	    function VComment(data, key) {
 	        _classCallCheck(this, VComment);
 	
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VComment).call(this));
 	
 	        _this.data = data;
+	        _this.key = key;
 	        return _this;
 	    }
 	
@@ -264,12 +267,13 @@
 	var VText = function (_VNode) {
 	    _inherits(VText, _VNode);
 	
-	    function VText(data) {
+	    function VText(data, key) {
 	        _classCallCheck(this, VText);
 	
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VText).call(this));
 	
 	        _this.data = data;
+	        _this.key = key;
 	        return _this;
 	    }
 	
@@ -309,7 +313,7 @@
 	
 	var _utils = __webpack_require__(7);
 	
-	var _htmlParser = __webpack_require__(8);
+	var _htmlParser = __webpack_require__(9);
 	
 	var _htmlParser2 = _interopRequireDefault(_htmlParser);
 	
@@ -390,7 +394,8 @@
 	}
 
 /***/ },
-/* 8 */
+/* 8 */,
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
