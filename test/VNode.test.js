@@ -12,7 +12,7 @@ test('VNode', t => {
         <div class="input">
             <textarea id="html"  class="xx"   name="yy y" ></textarea>
         </div>
-        <div id="main" name="yetone yeah">
+        <div id="main" name="yetone yeah" style="   color: red;  margin: 1px 2px 3px 4px; padding: 0;  ">
             <img>
             <!--comment-->
             <img/>
@@ -29,7 +29,10 @@ test('VNode', t => {
     div.innerHTML = html;
     let vNode = transformToVNode(div);
     let vNode1 = transformToVNode(`<div>${html}</div>`);
-    console.log(vNode);
-    console.log(vNode1);
     t.deepEqual(vNode, vNode1, 'should equal');
+    t.deepEqual(vNode1.children[5].properties.style, {
+        color: 'red',
+        margin: '1px 2px 3px 4px',
+        padding: '0'
+    });
 });

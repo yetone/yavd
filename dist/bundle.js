@@ -129,7 +129,11 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          * Created by yetone on 16/6/14.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          */
+	
+	exports.processStyle = processStyle;
 	
 	var _VNode2 = __webpack_require__(2);
 	
@@ -137,15 +141,28 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by yetone on 16/6/14.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function processStyle(style) {
+	    return style.split(';').map(function (piece) {
+	        return piece.trim().split(':');
+	    }).filter(function (pairs) {
+	        return pairs.length === 2;
+	    }).reduce(function (acc, cur) {
+	        var _cur = _slicedToArray(cur, 2);
+	
+	        var k = _cur[0];
+	        var v = _cur[1];
+	
+	        return _extends({}, acc, _defineProperty({}, k.trim(), v.trim()));
+	    }, {});
+	}
 	
 	var VElement = function (_VNode) {
 	    _inherits(VElement, _VNode);
@@ -159,26 +176,16 @@
 	
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VElement).call(this));
 	
-	        var style = properties.style;
-	
-	        if (typeof style === 'string') {
-	            properties.style = style.split(';').map(function (piece) {
-	                return piece.trim().split('=');
-	            }).filter(function (pairs) {
-	                return pairs.length === 2;
-	            }).reduce(function (acc, cur) {
-	                var _cur = _slicedToArray(cur, 2);
-	
-	                var k = _cur[0];
-	                var v = _cur[1];
-	
-	                return _extends({}, acc, _defineProperty({}, k, v));
-	            }, {});
-	        }
 	        _this.tagName = tagName.toUpperCase();
 	        _this.properties = properties;
 	        _this.children = children;
 	        _this.key = key;
+	
+	        var style = _this.properties.style;
+	
+	        if (typeof style === 'string') {
+	            _this.properties.style = processStyle(style);
+	        }
 	        return _this;
 	    }
 	
@@ -479,6 +486,9 @@
 	            } else {
 	                k = token.substr(0, idx);
 	                v = token.substr(idx + 2, l - k.length - 3);
+	            }
+	            if (k === 'style') {
+	                v = (0, _VElement.processStyle)(v);
 	            }
 	            this.ve.properties[k] = v;
 	        }
