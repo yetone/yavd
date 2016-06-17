@@ -3,4 +3,7 @@ yavd
 
 Yet another virtual dom lib. 🌊
 
-**[LIVE EXAMPLE](http://lab.collipa.com/yavd/example)**
+## Examples:
+
+* **[TREE](http://lab.collipa.com/yavd/example/tree)**
+* **[DIFF](http://lab.collipa.com/yavd/example/diff)**
