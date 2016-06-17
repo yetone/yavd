@@ -127,6 +127,8 @@
 	});
 	exports.default = undefined;
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /**
@@ -149,7 +151,12 @@
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
+	var enableStyleEncode = false;
+	
 	function processStyle(style) {
+	    if (!enableStyleEncode) {
+	        return style;
+	    }
 	    return style.split(';').map(function (piece) {
 	        return piece.trim().split(':');
 	    }).filter(function (pairs) {
@@ -168,7 +175,7 @@
 	    _inherits(VElement, _VNode);
 	
 	    function VElement(tagName) {
-	        var properties = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        var properties = arguments.length <= 1 || arguments[1] === undefined ? Object.create(null) : arguments[1];
 	        var children = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 	        var key = arguments[3];
 	        var namespace = arguments[4];
@@ -191,6 +198,23 @@
 	        return _this;
 	    }
 	
+	    _createClass(VElement, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+	
+	            var el = document.createElement(this.tagName);
+	            Object.keys(this.properties).forEach(function (propName) {
+	                var v = _this2.properties[propName];
+	                el.setAttribute(propName, v);
+	            });
+	            this.children.forEach(function (child) {
+	                el.appendChild(child.render());
+	            });
+	            return el;
+	        }
+	    }]);
+	
 	    return VElement;
 	}(_VNode3.default);
 	
@@ -206,6 +230,8 @@
 	    value: true
 	});
 	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _VNode2 = __webpack_require__(2);
 	
@@ -234,6 +260,13 @@
 	        return _this;
 	    }
 	
+	    _createClass(VComment, [{
+	        key: 'render',
+	        value: function render() {
+	            return document.createComment(this.data);
+	        }
+	    }]);
+	
 	    return VComment;
 	}(_VNode3.default);
 	
@@ -249,6 +282,8 @@
 	    value: true
 	});
 	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _VNode2 = __webpack_require__(2);
 	
@@ -276,6 +311,13 @@
 	        _this.key = key;
 	        return _this;
 	    }
+	
+	    _createClass(VText, [{
+	        key: 'render',
+	        value: function render() {
+	            return document.createTextNode(this.data);
+	        }
+	    }]);
 	
 	    return VText;
 	}(_VNode3.default);
