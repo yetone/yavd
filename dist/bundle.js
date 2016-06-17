@@ -69,16 +69,27 @@
 	
 	var _VText2 = _interopRequireDefault(_VText);
 	
+	var _diff = __webpack_require__(10);
+	
+	var _diff2 = _interopRequireDefault(_diff);
+	
+	var _patch = __webpack_require__(13);
+	
+	var _patch2 = _interopRequireDefault(_patch);
+	
 	var _utils = __webpack_require__(6);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	if (typeof window !== 'undefined') {
-	    window.VNode = _VNode2.default;
-	    window.VElement = _VElement2.default;
-	    window.VComment = _VComment2.default;
-	    window.VText = _VText2.default;
-	    window.transformToVNode = _utils.transformToVNode;
+	    var VD = window.VD = {};
+	    VD.VNode = _VNode2.default;
+	    VD.VElement = _VElement2.default;
+	    VD.VComment = _VComment2.default;
+	    VD.VText = _VText2.default;
+	    VD.transformToVNode = _utils.transformToVNode;
+	    VD.diff = _diff2.default;
+	    VD.patch = _patch2.default;
 	} /**
 	   * Created by yetone on 16/6/14.
 	   */
@@ -175,7 +186,7 @@
 	    _inherits(VElement, _VNode);
 	
 	    function VElement(tagName) {
-	        var properties = arguments.length <= 1 || arguments[1] === undefined ? Object.create(null) : arguments[1];
+	        var properties = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	        var children = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 	        var key = arguments[3];
 	        var namespace = arguments[4];
@@ -195,10 +206,31 @@
 	        if (typeof style === 'string') {
 	            _this.properties.style = processStyle(style);
 	        }
+	
+	        _this.count = _this.children.reduce(function (count, child) {
+	            child.parent = _this;
+	            return count + (child.count || 0) + 1;
+	        }, 0);
 	        return _this;
 	    }
 	
 	    _createClass(VElement, [{
+	        key: 'pushChild',
+	        value: function pushChild(child) {
+	            var count = child.count || 0;
+	            this.changeCount(count + 1);
+	            child.parent = this;
+	            this.children.push(child);
+	        }
+	    }, {
+	        key: 'changeCount',
+	        value: function changeCount(count) {
+	            if (this.parent) {
+	                this.parent.changeCount(count);
+	            }
+	            this.count += count;
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -339,7 +371,6 @@
 	                                                                                                                                                                                                                                                                   */
 	
 	exports.transformToVNode = transformToVNode;
-	exports.diff = diff;
 	
 	var _VElement = __webpack_require__(3);
 	
@@ -390,24 +421,53 @@
 	    }
 	    return transformStrToVNode(nodeOrStr);
 	}
-	
-	function diff(oldVn, newVn) {}
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.isArray = undefined;
+	exports.isVElement = isVElement;
+	exports.isVText = isVText;
+	exports.isVComment = isVComment;
 	exports.getType = getType;
 	exports.toArray = toArray;
 	exports.objExtend = objExtend;
-	/**
-	 * Created by yetone on 16/6/14.
-	 */
+	exports.setAttr = setAttr;
+	
+	var _VElement = __webpack_require__(3);
+	
+	var _VElement2 = _interopRequireDefault(_VElement);
+	
+	var _VText = __webpack_require__(5);
+	
+	var _VText2 = _interopRequireDefault(_VText);
+	
+	var _VComment = __webpack_require__(4);
+	
+	var _VComment2 = _interopRequireDefault(_VComment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function isVElement(obj) {
+	    return obj instanceof _VElement2.default;
+	} /**
+	   * Created by yetone on 16/6/14.
+	   */
+	
+	
+	function isVText(obj) {
+	    return obj instanceof _VText2.default;
+	}
+	
+	function isVComment(obj) {
+	    return obj instanceof _VComment2.default;
+	}
 	
 	var toString = Object.prototype.toString;
 	
@@ -433,6 +493,27 @@
 	    Object.keys(rest).filter(filter).forEach(function (k) {
 	        obj[k] = rest[k];
 	    });
+	}
+	
+	function setAttr(node, key, value) {
+	    switch (key) {
+	        case 'style':
+	            node.style.cssText = value;
+	            break;
+	        case 'value':
+	            var tagName = node.tagName || '';
+	            tagName = tagName.toLowerCase();
+	            if (['input', 'textarea'].indexOf(tagName) + 1) {
+	                node.value = value;
+	            } else {
+	                // if it is not a input or textarea, use `setAttribute` to set
+	                node.setAttribute(key, value);
+	            }
+	            break;
+	        default:
+	            node.setAttribute(key, value);
+	            break;
+	    }
 	}
 
 /***/ },
@@ -545,7 +626,7 @@
 	            if (!this.ve) {
 	                return;
 	            }
-	            this.ve.children.push(v);
+	            this.ve.pushChild(v);
 	        }
 	    }, {
 	        key: 'pushVe',
@@ -680,6 +761,404 @@
 	}();
 	
 	exports.default = new HTMLParser();
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.TYPES = undefined;
+	exports.default = diff;
+	
+	var _listDiff = __webpack_require__(11);
+	
+	var _listDiff2 = _interopRequireDefault(_listDiff);
+	
+	var _utils = __webpack_require__(7);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Created by yetone on 16/6/17.
+	 */
+	
+	var TYPES = exports.TYPES = {
+	    REPLACE: 0,
+	    REORDER: 1,
+	    PROPS: 2
+	};
+	
+	function diff(oldVN, newVN) {
+	    var idx = 0;
+	    var patches = {};
+	    walk(oldVN, newVN, idx, patches);
+	    return patches;
+	}
+	
+	function walk(oldVN, newVN, idx, patches) {
+	    var currentPatch = [];
+	    if (!newVN) {
+	        // pass
+	    } else if ((0, _utils.isVElement)(oldVN) && (0, _utils.isVElement)(newVN)) {
+	            if (oldVN.tagName === newVN.tagName && oldVN.key === newVN.key) {
+	                // Diff props
+	                var propsPatches = diffProps(oldVN, newVN);
+	                if (propsPatches) {
+	                    currentPatch.push({ type: TYPES.PROPS, props: propsPatches });
+	                }
+	                // Diff children. If the node has a `ignore` property, do not diff children
+	                if (!isIgnoreChildren(newVN)) {
+	                    diffChildren(oldVN.children, newVN.children, idx, patches, currentPatch);
+	                }
+	            } else {
+	                currentPatch.push({ type: TYPES.REPLACE, node: newVN });
+	            }
+	        } else {
+	            if (oldVN.constructor === newVN.constructor) {
+	                if (oldVN.data !== newVN.data) {
+	                    currentPatch.push({ type: TYPES.REPLACE, node: newVN, data: true });
+	                }
+	            } else {
+	                currentPatch.push({ type: TYPES.REPLACE, node: newVN });
+	            }
+	        }
+	
+	    if (currentPatch.length) {
+	        patches[idx] = currentPatch;
+	    }
+	}
+	
+	function diffProps(oldVN, newVN) {
+	    var count = 0;
+	    var oldProps = oldVN.properties;
+	    var newProps = newVN.properties;
+	
+	    var value = void 0;
+	    var propsPatches = {};
+	
+	    // Find out different properties
+	    Object.getOwnPropertyNames(oldProps).forEach(function (key) {
+	        value = oldProps[key];
+	        if (newProps[key] !== value) {
+	            count++;
+	            propsPatches[key] = newProps[key];
+	        }
+	    });
+	
+	    // Find out new property
+	    Object.getOwnPropertyNames(newProps).forEach(function (key) {
+	        value = newProps[key];
+	        if (!oldProps.hasOwnProperty(key)) {
+	            count++;
+	            propsPatches[key] = newProps[key];
+	        }
+	    });
+	
+	    // If properties all are identical
+	    if (count === 0) {
+	        return null;
+	    }
+	
+	    return propsPatches;
+	}
+	
+	function diffChildren(oldChildren, newChildren, idx, patches, currentPatch) {
+	    var diffs = (0, _listDiff2.default)(oldChildren, newChildren, 'key');
+	    var reorderPatch = void 0;
+	    newChildren = diffs.children;
+	
+	    if (diffs.moves.length) {
+	        reorderPatch = {
+	            type: TYPES.REORDER,
+	            moves: diffs.moves
+	        };
+	        currentPatch.push(reorderPatch);
+	    }
+	
+	    var leftVN = null;
+	    var currentIdx = idx;
+	    oldChildren.forEach(function (child, i) {
+	        var newChild = newChildren[i];
+	        var count = leftVN ? leftVN.count || 0 : 0;
+	        currentIdx = currentIdx + count + 1;
+	        walk(child, newChild, currentIdx, patches);
+	        leftVN = child;
+	    });
+	}
+	
+	function isIgnoreChildren(vn) {
+	    return vn.properties && vn.properties.hasOwnProperty('ignore');
+	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(12).diff
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	/**
+	 * Diff two list in O(N).
+	 * @param {Array} oldList - Original List
+	 * @param {Array} newList - List After certain insertions, removes, or moves
+	 * @return {Object} - {moves: <Array>}
+	 *                  - moves is a list of actions that telling how to remove and insert
+	 */
+	function diff (oldList, newList, key) {
+	  var oldMap = makeKeyIndexAndFree(oldList, key)
+	  var newMap = makeKeyIndexAndFree(newList, key)
+	
+	  var newFree = newMap.free
+	
+	  var oldKeyIndex = oldMap.keyIndex
+	  var newKeyIndex = newMap.keyIndex
+	
+	  var moves = []
+	
+	  // a simulate list to manipulate
+	  var children = []
+	  var i = 0
+	  var item
+	  var itemKey
+	  var freeIndex = 0
+	
+	  // fist pass to check item in old list: if it's removed or not
+	  while (i < oldList.length) {
+	    item = oldList[i]
+	    itemKey = getItemKey(item, key)
+	    if (itemKey) {
+	      if (!newKeyIndex.hasOwnProperty(itemKey)) {
+	        children.push(null)
+	      } else {
+	        var newItemIndex = newKeyIndex[itemKey]
+	        children.push(newList[newItemIndex])
+	      }
+	    } else {
+	      var freeItem = newFree[freeIndex++]
+	      children.push(freeItem || null)
+	    }
+	    i++
+	  }
+	
+	  var simulateList = children.slice(0)
+	
+	  // remove items no longer exist
+	  i = 0
+	  while (i < simulateList.length) {
+	    if (simulateList[i] === null) {
+	      remove(i)
+	      removeSimulate(i)
+	    } else {
+	      i++
+	    }
+	  }
+	
+	  // i is cursor pointing to a item in new list
+	  // j is cursor pointing to a item in simulateList
+	  var j = i = 0
+	  while (i < newList.length) {
+	    item = newList[i]
+	    itemKey = getItemKey(item, key)
+	
+	    var simulateItem = simulateList[j]
+	    var simulateItemKey = getItemKey(simulateItem, key)
+	
+	    if (simulateItem) {
+	      if (itemKey === simulateItemKey) {
+	        j++
+	      } else {
+	        // new item, just inesrt it
+	        if (!oldKeyIndex.hasOwnProperty(itemKey)) {
+	          insert(i, item)
+	        } else {
+	          // if remove current simulateItem make item in right place
+	          // then just remove it
+	          var nextItemKey = getItemKey(simulateList[j + 1], key)
+	          if (nextItemKey === itemKey) {
+	            remove(i)
+	            removeSimulate(j)
+	            j++ // after removing, current j is right, just jump to next one
+	          } else {
+	            // else insert item
+	            insert(i, item)
+	          }
+	        }
+	      }
+	    } else {
+	      insert(i, item)
+	    }
+	
+	    i++
+	  }
+	
+	  function remove (index) {
+	    var move = {index: index, type: 0}
+	    moves.push(move)
+	  }
+	
+	  function insert (index, item) {
+	    var move = {index: index, item: item, type: 1}
+	    moves.push(move)
+	  }
+	
+	  function removeSimulate (index) {
+	    simulateList.splice(index, 1)
+	  }
+	
+	  return {
+	    moves: moves,
+	    children: children
+	  }
+	}
+	
+	/**
+	 * Convert list to key-item keyIndex object.
+	 * @param {Array} list
+	 * @param {String|Function} key
+	 */
+	function makeKeyIndexAndFree (list, key) {
+	  var keyIndex = {}
+	  var free = []
+	  for (var i = 0, len = list.length; i < len; i++) {
+	    var item = list[i]
+	    var itemKey = getItemKey(item, key)
+	    if (itemKey) {
+	      keyIndex[itemKey] = i
+	    } else {
+	      free.push(item)
+	    }
+	  }
+	  return {
+	    keyIndex: keyIndex,
+	    free: free
+	  }
+	}
+	
+	function getItemKey (item, key) {
+	  if (!item || !key) return void 666
+	  return typeof key === 'string'
+	    ? item[key]
+	    : key(item)
+	}
+	
+	exports.makeKeyIndexAndFree = makeKeyIndexAndFree // exports for test
+	exports.diff = diff
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = patch;
+	
+	var _diff = __webpack_require__(10);
+	
+	var _utils = __webpack_require__(7);
+	
+	/**
+	 * Created by yetone on 16/6/17.
+	 */
+	
+	function patch(node, patches) {
+	    var walker = { idx: 0 };
+	    walk(node, walker, patches);
+	}
+	
+	function walk(node, walker, patches) {
+	    var currentPatches = patches[walker.idx];
+	
+	    (0, _utils.toArray)(node.childNodes).forEach(function (child) {
+	        walker.idx++;
+	        walk(child, walker, patches);
+	    });
+	
+	    if (currentPatches) {
+	        applyPatches(node, currentPatches);
+	    }
+	}
+	
+	function applyPatches(node, patches) {
+	    var newNode = void 0;
+	    patches.forEach(function (patch) {
+	        switch (patch.type) {
+	            case _diff.TYPES.REPLACE:
+	                if (patch.data) {
+	                    node.data = patch.node.data;
+	                } else {
+	                    newNode = patch.node.render();
+	                    node.parentNode.replaceChild(newNode, node);
+	                }
+	                break;
+	            case _diff.TYPES.REORDER:
+	                reorderChildren(node, patch.moves);
+	                break;
+	            case _diff.TYPES.PROPS:
+	                setProps(node, patch.props);
+	                break;
+	            default:
+	                throw new Error('Unknown patch type ' + patch.type);
+	        }
+	    });
+	}
+	
+	function setProps(node, props) {
+	    var value = void 0;
+	    Object.getOwnPropertyNames(props).forEach(function (key) {
+	        value = props[key];
+	        if (value === void 0) {
+	            node.removeAttribute();
+	        } else {
+	            (0, _utils.setAttr)(node, key, value);
+	        }
+	    });
+	}
+	
+	function reorderChildren(node, moves) {
+	    var childNodes = node.childNodes;
+	    var staticNodes = (0, _utils.toArray)(childNodes);
+	    var maps = {};
+	
+	    staticNodes.forEach(function (node) {
+	        if (node.nodeType === 1) {
+	            var key = node.getAttribute('key');
+	            if (key) {
+	                maps[key] = node;
+	            }
+	        }
+	    });
+	
+	    moves.forEach(function (move) {
+	        var insertNode = void 0;
+	        var idx = move.idx;
+	        if (move.type === 0) {
+	            // remove item
+	            if (staticNodes[idx] === childNodes[idx]) {
+	                // maybe have been removed for inserting
+	                node.removeChild(childNodes[idx]);
+	            }
+	            staticNodes.splice(idx, 1);
+	        } else if (move.type === 1) {
+	            // insert item
+	            insertNode = maps[move.item.key] ? maps[move.item.key] // reuse old item
+	            : move.item.render();
+	            staticNodes.splice(idx, 0, insertNode);
+	            node.insertBefore(insertNode, childNodes[idx] || null);
+	        }
+	    });
+	}
 
 /***/ }
 /******/ ]);

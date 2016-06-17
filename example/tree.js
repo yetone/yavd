@@ -68,14 +68,14 @@ function draw() {
                     borderWidth: 0
                 }
             },
-            data: [toChartData(transformToVNode(cm.doc.getValue()))]
+            data: [toChartData(VD.transformToVNode(cm.doc.getValue()))]
         }]
     };
     myChart.setOption(option);
 }
 
 function toChartData(vn) {
-    if (vn instanceof VText) {
+    if (vn instanceof VD.VText) {
         if (!vn.data.trim()) {
             return;
         }
@@ -83,7 +83,7 @@ function toChartData(vn) {
             name: '#Text'
         }
     }
-    if (vn instanceof VComment) {
+    if (vn instanceof VD.VComment) {
         return {
             name: '<!--comment-->'
         }
@@ -127,5 +127,3 @@ if (hash) {
 </body>\n\
 </html>');
 }
-
-draw();
