@@ -177,7 +177,7 @@
 	
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VElement).call(this));
 	
-	        _this.tagName = tagName.toUpperCase();
+	        _this.tagName = tagName;
 	        _this.properties = properties;
 	        _this.children = children;
 	        _this.key = key;
@@ -329,7 +329,7 @@
 	        properties = (0, _utils.toArray)(node.attributes).reduce(function (prev, curr) {
 	            return _extends({}, prev, _defineProperty({}, curr.name, curr.value));
 	        }, {});
-	        res = new _VElement2.default(node.tagName, properties, children);
+	        res = new _VElement2.default(node.tagName.toLowerCase(), properties, children);
 	    } else if (node instanceof Text) {
 	        res = new _VText2.default(node.data);
 	    } else if (node instanceof Comment) {
