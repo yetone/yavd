@@ -12,7 +12,7 @@
     });
     var node;
 
-    function draw() {
+    function _draw() {
         if (!node) {
             node = vNode.render();
             main.appendChild(node);
@@ -25,7 +25,11 @@
         }
     }
 
-    function _draw() {
+    function draw() {
+        var patches = {};
+        if (newVNode) {
+            patches = VD.diff(vNode, newVNode);
+        }
         var myChart = echarts.init(main);
         var option = {
             title: {
@@ -83,30 +87,51 @@
                         borderWidth: 0
                     }
                 },
-                data: [getChartData(vNode)]
+                data: [getChartData(vNode, { idx: 0 }, patches)]
             }]
         };
         myChart.setOption(option);
+        vNode = newVNode;
     }
 
-    function getChartData(vn) {
+    function getChartData(vn, walker, patches) {
+        var patch = patches[walker.idx];
+        var itemStyle = {
+            normal: {
+            }
+        };
+        if (patch) {
+            itemStyle = {
+                normal: {
+                    color: ['green', 'red', '#ff79c6'][patch[0].type]
+                }
+            }
+        }
         if (vn instanceof VD.VText) {
             if (!vn.data.trim()) {
                 return;
             }
             return {
-                name: '#Text'
+                name: '#Text',
+                value: vn.data,
+                itemStyle: itemStyle
             }
         }
         if (vn instanceof VD.VComment) {
             return {
-                name: '<!--comment-->'
+                name: '<!--comment-->',
+                value: vn.data,
+                itemStyle: itemStyle
             }
         }
-        var children = vn.children.map(getChartData).filter(function(item) { return item });
+        var children = vn.children.map(item => {
+            walker.idx++;
+            return getChartData(item, walker, patches);
+        }).filter(function(item) { return item });
         return {
             name: vn.tagName,
-            children: children
+            children: children,
+            itemStyle: itemStyle
         }
     }
 
@@ -123,12 +148,20 @@
     if (hash) {
         value = decodeURIComponent(hash);
     } else {
-        value = '<div>\n\
+        value = '\
+<div>\n\
   <!--这是注释-->\n\
   <p>Hello,World!</p>\n\
   <div>\n\
-    Test haha!\n\
-    <input type="text">\n\
+      haha\n\
+      <div class="word" style="color: blue; font-size: 12px;">\n\
+        Test haha!\n\
+        <input type="text">\n\
+      </div>\n\
+      <div class="hello" id="hh" disabled >\n\
+        <span>Test haha!</span>\n\
+        <input type="text">\n\
+      </div>\n\
   </div>\n\
 </div>'
     }
