@@ -35,11 +35,11 @@ function draw() {
                 x: 'left',
                 y: 'center'
             }, // 根节点位置  {x: 100, y: 'center'}
-            nodePadding: 8,
+            nodePadding: 14,
             layerPadding: 100,
             hoverable: false,
             roam: true,
-            symbolSize: 6,
+            symbolSize: 8,
             itemStyle: {
                 normal: {
                     color: '#4883b4',
@@ -49,7 +49,7 @@ function draw() {
                         formatter: "{b}",
                         textStyle: {
                             color: '#000',
-                            fontSize: 5
+                            fontSize: 13
                         }
                     },
                     lineStyle: {
