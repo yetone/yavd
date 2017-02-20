@@ -5,5 +5,5 @@ Yet another virtual dom lib. 🌊
 
 ## Examples:
 
-* **[TREE](http://lab.collipa.com/yavd/example/tree)**
-* **[DIFF](http://lab.collipa.com/yavd/example/diff)**
+* **[TREE](https://yetone.github.io/yavd/example/tree)**
+* **[DIFF](https://yetone.github.io/yavd/example/diff)**
