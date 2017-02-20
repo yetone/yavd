@@ -57,17 +57,17 @@
     <script src="https://cdn.rawgit.com/ecomfe/echarts/2.2.7/build/dist/echarts-all.js"></script>
     <script src="../../yavd/dist/bundle.js"></script>
     <script>
-        console.log(transformToVNode(document.querySelector('.box')));
+        console.log(VD.transformToVNode(document.querySelector('.box')));
         var s = '<div class="id" data-name="hehe\"\'" test-attr disabled>text 1 > 2<div /> <a href="hehe">I am a</  a><div class="ww">I am div<p>I am p</p></div>text2</div>';
         var w = '<div class="xixi" hidden />';
         var e = '<div class="ii" xx><!--a--><!b><!--c><!--></div>';
         var r = '<div><img a  ><p class="hidden"  ></p></div>';
         var t = '<div><fuck ></fuck><p></p></div>';
-        console.log(transformToVNode(s));
-        console.log(transformToVNode(w));
-        console.log(transformToVNode(e));
-        console.log(transformToVNode(r));
-        console.log(transformToVNode(t));
+        console.log(VD.transformToVNode(s));
+        console.log(VD.transformToVNode(w));
+        console.log(VD.transformToVNode(e));
+        console.log(VD.transformToVNode(r));
+        console.log(VD.transformToVNode(t));
     </script>
     <script src="../../yavd/example/tree.js"></script>
 </body>
