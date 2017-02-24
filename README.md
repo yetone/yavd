@@ -1,7 +1,7 @@
 yavd
 ============
 
-![](https://api.travis-ci.org/yetone/yavd.svg?branch=master)
+[![Build Status](https://api.travis-ci.org/yetone/yavd.svg?branch=master)](https://travis-ci.org/yetone/yavd)
 
 Yet another virtual dom lib. 🌊
 
