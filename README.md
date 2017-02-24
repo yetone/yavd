@@ -1,6 +1,8 @@
 yavd
 ============
 
+![](https://api.travis-ci.org/yetone/yavd.svg?branch=master)
+
 Yet another virtual dom lib. 🌊
 
 ## Examples:
